@@ -2,19 +2,18 @@
 
 
 
-<?php 
+<?php
 
- $site = file_get_contents("http://www.hurriyet.com.tr/haberleri/yks");
+$site = file_get_contents("http://www.hurriyet.com.tr/haberleri/yks");
+preg_match_all('@<p class="news-p">(.*?)</p>@si',  $site,  $baslik2);
 
- 		preg_match_all('@<p class="news-p">(.*?)</p>@si',  $site,  $baslik);
-
-
- 		//print_r(json_encode(array_values($baslik[1])));
-
-
-
- 		$cikti= implode("", $baslik[1]);
-
- 		echo $cikti;
+echo '[';
+array_walk_recursive($baslik2[1], function (&$item, $key) {
+    echo "\n";
+    echo '"';
+    echo str_replace('"',"'",$item);
+    echo '",';
+});
+echo '""]';
 
  ?>
